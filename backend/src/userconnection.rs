@@ -18,8 +18,8 @@ impl UserConnection {
         })
         .abort_handle();
         Self {
-            sender: sender,
-            aborthandle: aborthandle,
+            sender,
+            aborthandle,
         }
     }
     pub fn send(&self, msg: ChannelMessage) {

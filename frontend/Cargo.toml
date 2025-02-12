@@ -4,14 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-serde = { version = "1.0.215", features = ["derive"] }
+serde.workspace = true
 cursive = { version = "0.21.1", features = ["ansi"] }
-tokio = { version = "1.42.0", features = ["full"] }
+tokio.workspace = true
 ureq = { version = "2.12.1", features = ["json"] }
-tokio-tungstenite = "0.24.0"
-futures-util = "0.3.31"
+tokio-tungstenite.workspace = true
+futures-util.workspace = true
 cursive_core = "0.4.6"
 crossterm = "0.28.1"
-anyhow = "1.0.94"
-chrono = "0.4.39"
+anyhow.workspace = true
+chrono.workspace = true
 argh = "0.1.13"

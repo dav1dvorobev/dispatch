@@ -26,13 +26,15 @@ impl Context {
         let connections = Arc::new(RwLock::new(HashMap::new()));
         let channel = Channel::new(pg_pool.clone(), connections.clone()).await?;
         Ok(Self {
-            key: key,
-            pg_pool: pg_pool,
-            channel: channel,
-            connections: connections,
+            key,
+            pg_pool,
+            channel,
+            connections,
         })
     }
-    pub fn key(&self) -> &HS256Key { &self.key }
+    pub fn key(&self) -> &HS256Key {
+        &self.key
+    }
     pub async fn contains(&self, username: &str) -> bool {
         self.connections.read().await.contains_key(username)
     }

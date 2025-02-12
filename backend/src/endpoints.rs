@@ -15,7 +15,7 @@ use tokio_tungstenite::{accept_async, tungstenite::Message};
 pub async fn signin(context: Context, mut socket: TcpStream, body: &str) -> Result<()> {
     let authrequest: AuthRequest = serde_json::from_str(body)?;
     if !authrequest.is_valid() {
-        socket
+        let _ = socket
             .write(&Response::new(409, "Conflict", "Wrong format"))
             .await?;
         return Ok(());
@@ -29,14 +29,14 @@ pub async fn signin(context: Context, mut socket: TcpStream, body: &str) -> Resu
         if !context.contains(authrequest.username).await {
             let claims = Claims::create(Duration::from_mins(1)).with_subject(authrequest.username);
             let token = context.key().authenticate(claims)?;
-            socket.write(&Response::new(200, "OK", &token)).await?;
+            let _ = socket.write(&Response::new(200, "OK", &token)).await?;
         } else {
-            socket
+            let _ = socket
                 .write(&Response::new(409, "Conflict", "Already in"))
                 .await?;
         }
     } else {
-        socket
+        let _ = socket
             .write(&Response::new(
                 401,
                 "Unauthorized",
@@ -50,7 +50,7 @@ pub async fn signin(context: Context, mut socket: TcpStream, body: &str) -> Resu
 pub async fn signup(context: Context, mut socket: TcpStream, body: &str) -> Result<()> {
     let authrequest: AuthRequest = serde_json::from_str(body)?;
     if !authrequest.is_valid() {
-        socket
+        let _ = socket
             .write(&Response::new(409, "Conflict", "Wrong format"))
             .await?;
         return Ok(());
@@ -60,14 +60,14 @@ pub async fn signup(context: Context, mut socket: TcpStream, body: &str) -> Resu
         .execute(&context.pg_pool)
         .await?;
     if query.rows_affected() == 0 {
-        socket.write(&Response::new(200, "OK", "Success")).await?;
+        let _ = socket.write(&Response::new(200, "OK", "Success")).await?;
         sqlx::query("INSERT INTO users (username, password) VALUES ($1, $2)")
             .bind(authrequest.username)
             .bind(authrequest.password)
             .execute(&context.pg_pool)
             .await?;
     } else {
-        socket
+        let _ = socket
             .write(&Response::new(409, "Conflict", "Already exists"))
             .await?;
     }

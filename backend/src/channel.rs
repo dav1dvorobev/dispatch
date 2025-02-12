@@ -28,7 +28,7 @@ impl Channel {
                 .expect("failed insert into to table \"messages\"");
             }
         });
-        Ok(Self { sender: sender })
+        Ok(Self { sender })
     }
     pub fn send(&self, msg: ChannelMessage) -> Result<()> {
         self.sender.send(msg)?;
